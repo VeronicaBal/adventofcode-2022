@@ -11,9 +11,9 @@ const client = new AocClient({
 
 const input = await client.getInput();
 
+let elvesPairs = input.split(`\n`);
 
 function assignmentContained (input) {
-let elvesPairs = input.split(`\n`);
 let containedSum = 0;
 for (let pair of elvesPairs) {
     /* Separate each input line to get the assignments of each pair */
@@ -21,7 +21,7 @@ for (let pair of elvesPairs) {
     /* Assign each assignment to a variable and separate the start and end of each assignment */
     let assingmentElf1 = assignments[0].split("-");
     let assingmentElf2 = assignments[1].split("-");
-    /* Check if assignments overlap and add to counter*/
+    /* Check if assignments are contained into one another and add to counter*/
     if ((Number(assingmentElf1[0]) <= Number(assingmentElf2[0]) && Number(assingmentElf1[1]) >= Number(assingmentElf2[1]))
         || (Number(assingmentElf2[0]) <= Number(assingmentElf1[0]) && Number(assingmentElf2[1]) >= Number(assingmentElf1[1]))) {
             containedSum ++;
@@ -30,5 +30,23 @@ for (let pair of elvesPairs) {
 return containedSum;
 }
 
-await client.run([assignmentContained], true);
+function assignmentOverlapping (input) {
+  let overlappingSum = 0;
+  for (let pair of elvesPairs) {
+      /* Separate each input line to get the assignments of each pair */
+      let assignments = pair.split(",");
+      /* Assign each assignment to a variable and separate the start and end of each assignment */
+      let assingmentElf1 = assignments[0].split("-");
+      let assingmentElf2 = assignments[1].split("-");
+      console.log(Number(assingmentElf2[0]), Number(assingmentElf1[1]), Number(assingmentElf2[0]) <= Number(assingmentElf1[1]) && Number(assingmentElf2[1]) <= Number(assingmentElf1[0]))
+      /* Check if assignments overlap and add to counter*/
+      if (Number(assingmentElf2[0]) <= Number(assingmentElf1[1]) && Number(assingmentElf2[1]) >= Number(assingmentElf1[0])) {
+              overlappingSum ++;
+       }
+  }
+  return overlappingSum;
+}
+
+
+await client.run([assignmentContained, assignmentOverlapping], true);
 

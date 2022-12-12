@@ -10,6 +10,7 @@ const client = new AocClient({
 
 const input = await client.getInput();
 
+
 /* Parse input to extract program information */
 let program = input.split(`\n`)
     .map((line) => {
@@ -27,6 +28,7 @@ class CPU {
         this.program = program;
         this.currentLine = 0;
         this.cycle = 0;
+        this.wait = 0;
         this.registers = {
             X: 1,
         };
@@ -68,6 +70,9 @@ function part1 (program) {
   let cpu = new CPU(program);
   let sum = 0;
   while (true) {
+    if (!cpu.runCycle()) {
+        break;
+      }
     if(cpu.cycle%40 === 20) {
         sum += cpu.cycle * cpu.registers.X;
     }
@@ -87,7 +92,7 @@ class CRT {
     }
 
     runCycle(spritePosition){
-        const x = this.currentIndex % this.wifth;
+        const x = this.currentIndex % this.width;
         const y = Math.floor(this.currentIndex / this.width);
         
         if (y >= this.height){
@@ -106,7 +111,7 @@ class CRT {
     }
 }
 
-function part2 (program) {
+function part2 () {
    let cpu = new CPU(program);
    let crt = new CRT();
    while (true) {
@@ -115,7 +120,9 @@ function part2 (program) {
         break;
     }
    }
-   crt.printScreen;
+   crt.printScreen();
 }
+
+
 
 await client.run([part1, part2], true);
